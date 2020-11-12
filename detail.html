@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <a class="navbar-brand" href="./index.html">Amazon</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav"></ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="container text-center">
+      <h1>Details of product</h1>
+      <!-- <div class="my-5" id="details"></div> -->
+      <!-- <h2 class="my-5">Products</h2> -->
+
+      <!-- <div id="currentEvents"></div> -->
+      <!-- <ul class="list-group list-group-flush" id="currentEvents"></ul> -->
+      <div class="row mt-3 row-cols-sm-1" id="currentEvents">
+       
+    </div>
+
+    `;
+
+    <script>
+      let id;
+      const url = "https://striveschool-api.herokuapp.com/api/product/";
+
+      window.onload = async () => {
+        //     const url = "https://striveschool-api.herokuapp.com/api/product/";
+
+        //        let currentEvents = document.querySelector("#currentEvents");
+        let urlParams = new URLSearchParams(window.location.search); // creating a new instance of the URLSearchParams object
+        id = urlParams.get("id"); // saving the id retrieved from the url address bar
+        
+        try {
+          let headers = new Headers({
+            // we need also to declare the content type
+            "Content-Type": "application/json",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmFiYzc0ODRiY2RlMTAwMTc2MTZhOTMiLCJpYXQiOjE2MDUwOTMxOTMsImV4cCI6MTYwNjMwMjc5M30.Kn6ZT2xO1YZLg150dfse8kmZaXomgGZ1dCGPf5Tbtnk",
+          });
+          let response = await fetch(url + id, { headers }); // this is getting the response from the API for a fetch request
+          let event = await response.json(); // this is transforming the response in a json, asyncronous operation!
+
+          let element = document.createElement("card");
+          element.innerHTML = ` <div class="col my-3">
+                                    <div class="card" style="height: 100%; width: 50rem;">
+                                    <img src="${event.imageUrl}" class="card-img-top";"  alt="..." />
+                                    <div class="card-body">
+                                    <h5 class="card-title">${event.name}</h5>
+                                    <h5 class="card-title">${event.brand}</h5>
+                                     <p class="card-text">
+                                    <b>Description:</b> <br />
+                                    <small>${event.description}</small>
+                                    </p>
+                                    <p class="card-text"><b>Price:</b> ${event.price}$</p>
+                                    <a onclick="handleEdit()" class="btn btn-primary mr-5">Edit product</a>
+                                    <a onclick="handleDelete()" class="btn btn-primary ml-5">Delete product</a>
+            </div>
+          </div>
+        </div>`;
+
+          document.querySelector("#currentEvents").appendChild(element);
+        } catch (error) {
+          alert("Something went wrong");
+        }
+      };
+
+      const handleDelete = async () => {
+        try {
+          let headers = new Headers({
+            // we need also to declare the content type
+            "Content-Type": "application/json",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmFiYzc0ODRiY2RlMTAwMTc2MTZhOTMiLCJpYXQiOjE2MDUwOTMxOTMsImV4cCI6MTYwNjMwMjc5M30.Kn6ZT2xO1YZLg150dfse8kmZaXomgGZ1dCGPf5Tbtnk",
+          });
+
+          const response = await fetch(url + id, { headers, method: "DELETE" });
+          if (response.ok) {
+            // checking the ok property which stores the successful result of the operation
+            alert("Event deleted successfully");
+            location.assign("index.html");
+          } else {
+            alert("Something went wrong!");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      const handleEdit = () => {
+        location.href = "backoffice.html?id=" + id;
+      };
+
+
+  
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
