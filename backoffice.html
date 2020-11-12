@@ -123,7 +123,12 @@
       //CREATE => POST https://striveschool.herokuapp.com/api/agenda/ ==> create a new item
 
       const url = "https://striveschool-api.herokuapp.com/api/product/";
-
+      let headers = new Headers({
+        // we need also to declare the content type
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmFiYzc0ODRiY2RlMTAwMTc2MTZhOTMiLCJpYXQiOjE2MDUwOTMxOTMsImV4cCI6MTYwNjMwMjc5M30.Kn6ZT2xO1YZLg150dfse8kmZaXomgGZ1dCGPf5Tbtnk",
+      });
       window.onload = async () => {
         let urlParams = new URLSearchParams(window.location.search);
         id = urlParams.get("id");
@@ -133,7 +138,7 @@
           document.getElementById("name").value = event.name;
           document.getElementById("description").value = event.description;
           document.getElementById("brand").value = event.brand;
-          document.getElementById("img").value = event.url;
+          document.getElementById("img").imageUrl = event.img; //not sure which is correct syntax???
           document.getElementById("price").value = event.price;
         }
       };
