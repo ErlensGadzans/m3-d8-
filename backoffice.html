@@ -66,6 +66,7 @@
                 class="form-control"
                 id="name"
                 placeholder="Write here the name"
+                required
               />
             </div>
 
@@ -76,6 +77,7 @@
                 id="description"
                 rows="3"
                 placeholder="Write here the description"
+                required
               ></textarea>
             </div>
 
@@ -86,12 +88,19 @@
                 class="form-control"
                 id="brand"
                 placeholder="Write here the brand name"
+                required
               />
             </div>
 
             <div class="form-group">
               <label for="name">Image </label>
-              <input type="text" class="form-control" id="img" placeholder="" />
+              <input
+                type="text"
+                class="form-control"
+                id="img"
+                placeholder=""
+                required
+              />
             </div>
 
             <div class="form-group">
@@ -101,6 +110,7 @@
                 class="form-control"
                 id="price"
                 placeholder="Write here the price"
+                required
               />
             </div>
 
@@ -110,6 +120,12 @@
                 type="submit"
                 value="Submit event"
               >
+                <span
+                  class="spinner-border spinner-border-sm d-none"
+                  role="status"
+                  aria-hidden="true"
+                  id="loadingSpinner"
+                ></span>
                 Add product
               </button>
             </div>
@@ -138,7 +154,7 @@
           document.getElementById("name").value = event.name;
           document.getElementById("description").value = event.description;
           document.getElementById("brand").value = event.brand;
-          document.getElementById("img").imageUrl = event.img; //not sure which is correct syntax???
+          document.getElementById("img").value = event.imageUrl;
           document.getElementById("price").value = event.price;
         }
       };
@@ -149,6 +165,9 @@
       };
 
       const submitEvent = async () => {
+        let spinner = document.querySelector("#loadingSpinner");
+        spinner.classList.toggle("d-none"); // showing the spinner
+
         let myEvent = {
           // gathering the data from the form, field by field
           name: document.querySelector("#name").value,
