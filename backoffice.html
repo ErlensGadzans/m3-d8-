@@ -124,6 +124,20 @@
 
       const url = "https://striveschool-api.herokuapp.com/api/product/";
 
+      window.onload = async () => {
+        let urlParams = new URLSearchParams(window.location.search);
+        id = urlParams.get("id");
+        if (id) {
+          let response = await fetch(url + id, { headers }); // contacting the endpoint for a single event
+          let event = await response.json(); // transforming the response body in an usable object, asyncronous operation!
+          document.getElementById("name").value = event.name;
+          document.getElementById("description").value = event.description;
+          document.getElementById("brand").value = event.brand;
+          document.getElementById("img").value = event.url;
+          document.getElementById("price").value = event.price;
+        }
+      };
+
       const handleSubmit = (e) => {
         e.preventDefault(); // preventing the default browser event handling
         submitEvent();
@@ -139,21 +153,48 @@
           price: document.querySelector("#price").value,
         };
 
-        console.log(myEvent);
+        //console.log(myEvent);
 
         try {
-          let response = await fetch(url, {
-            // our POST request is made with the fetch method as well!
-            method: "POST", // declaring the CRUD method
-            body: JSON.stringify(myEvent), // we need to stringify the JS object in order to send it
-            headers: new Headers({
-              // we need also to declare the content type
-              "Content-Type": "application/json",
-              Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmFiYzc0ODRiY2RlMTAwMTc2MTZhOTMiLCJpYXQiOjE2MDUwOTMxOTMsImV4cCI6MTYwNjMwMjc5M30.Kn6ZT2xO1YZLg150dfse8kmZaXomgGZ1dCGPf5Tbtnk",
-            }),
-          });
+          let response;
 
+          if (id) {
+            response = await fetch(url + id, {
+              // our PUT request is made with the fetch method as well!
+              method: "PUT", // declaring the CRUD method
+              body: JSON.stringify(myEvent), // we need to stringify the JS object in order to send it
+              headers: new Headers({
+                // we need also to declare the content type
+                "Content-Type": "application/json",
+                Authorization:
+                  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmFiYzc0ODRiY2RlMTAwMTc2MTZhOTMiLCJpYXQiOjE2MDUwOTMxOTMsImV4cCI6MTYwNjMwMjc5M30.Kn6ZT2xO1YZLg150dfse8kmZaXomgGZ1dCGPf5Tbtnk",
+              }),
+            });
+          } else {
+            response = await fetch(url, {
+              // our PUT request is made with the fetch method as well!
+              method: "POST", // declaring the CRUD method
+              body: JSON.stringify(myEvent), // we need to stringify the JS object in order to send it
+              headers: new Headers({
+                // we need also to declare the content type
+                "Content-Type": "application/json",
+                Authorization:
+                  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmFiYzc0ODRiY2RlMTAwMTc2MTZhOTMiLCJpYXQiOjE2MDUwOTMxOTMsImV4cCI6MTYwNjMwMjc5M30.Kn6ZT2xO1YZLg150dfse8kmZaXomgGZ1dCGPf5Tbtnk",
+              }),
+            });
+          }
+          //   if (response.ok) {
+          //     // checking the ok property which stores the successful result of the operation
+          //     spinner.classList.toggle("d-none"); // hiding the spinner
+          //     alert(`Event ${id ? "updated" : "created"} successfully`);
+          //     location.assign("index.html");
+          //   } else {
+          //     spinner.classList.toggle("d-none"); // hiding the spinner
+          //     alert("Something went wrong!");
+          //   }
+          // } catch (error) {
+          //   console.log(error);
+          // }
           if (response.ok) {
             // checking the ok property which stores the successful result of the operation
             alert("Event created successfully");
